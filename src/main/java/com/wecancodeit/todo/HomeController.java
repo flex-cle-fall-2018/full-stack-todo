@@ -61,7 +61,7 @@ public class HomeController {
 			TaskItem task = taskOptional.get();
 			task.setDescription(taskDescription);
 			taskRepo.save(task);
-			return "redirect:/";
+			return "redirect:/viewTask/{id}/";
 		}
 		
 		throw new TaskItemNotFoundException();		

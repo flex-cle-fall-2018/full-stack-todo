@@ -92,11 +92,13 @@ public class HomeControllerMockMvcTest {
 	// Test viewing an individual task
 	@Test
 	public void shouldRouteToViewTaskPage() throws Exception {
+		when(taskRepo.findById(1L)).thenReturn(Optional.of(task1));
 		mvc.perform(get("/viewTask/1/")).andExpect(view().name(is("task")));
 	}
 	
 	@Test
 	public void shouldBeOkForViewTask() throws Exception {
+		when(taskRepo.findById(1L)).thenReturn(Optional.of(task1));
 		mvc.perform(get("/viewTask/1/")).andExpect(status().isOk());
 	}
 	
