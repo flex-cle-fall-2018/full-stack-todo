@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
@@ -34,6 +35,7 @@ public class HomeControllerMockMvcTest {
 	@Mock TaskItem task1;
 	@Mock TaskItem task2;
 	
+	// Test viewing task list on index page
 	@Test
 	public void shouldRouteToIndex() throws Exception {
 		mvc.perform(get("/")).andExpect(view().name(is("index")));
@@ -85,5 +87,44 @@ public class HomeControllerMockMvcTest {
 	public void shouldDeleteTask() throws Exception {
 		mvc.perform(get("/deleteTask").param("taskId", "1"));
 		verify(taskRepo, times(1)).deleteById(any());
+	}
+	
+	// Test viewing an individual task
+	@Test
+	public void shouldRouteToViewTaskPage() throws Exception {
+		mvc.perform(get("/viewTask/1/")).andExpect(view().name(is("task")));
+	}
+	
+	@Test
+	public void shouldBeOkForViewTask() throws Exception {
+		mvc.perform(get("/viewTask/1/")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void shouldPutTaskIntoModelForViewTask() throws Exception {
+		when(taskRepo.findById(1L)).thenReturn(Optional.of(task1));
+		mvc.perform(get("/viewTask/1/"))
+			.andExpect(model().attribute("task", is(task1)));
+	}
+	
+	// Test updating a task
+	@Test
+	public void shouldAcceptValidTaskUpdateForm() throws Exception {
+		when(taskRepo.findById(1L)).thenReturn(Optional.of(task1));
+		mvc.perform(post("/updateTask/1/").param("taskDescription", "New Description"))
+			.andExpect(status().is3xxRedirection());
+	}
+	
+	@Test
+	public void shouldNotAcceptInvalidTaskUpdateForm() throws Exception {
+		mvc.perform(post("/updateTask/1/")).andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void shouldUpdateTask() throws Exception {
+		when(taskRepo.findById(1L)).thenReturn(Optional.of(task1));
+		mvc.perform(post("/updateTask/1/").param("taskDescription", "New Description"));
+		verify(task1).setDescription("New Description");
+		verify(taskRepo).save(task1);
 	}
 }
