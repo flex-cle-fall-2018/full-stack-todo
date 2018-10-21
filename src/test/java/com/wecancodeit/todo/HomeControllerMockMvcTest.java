@@ -83,6 +83,7 @@ public class HomeControllerMockMvcTest {
 	
 	@Test
 	public void shouldDeleteTask() throws Exception {
-		//
+		mvc.perform(get("/deleteTask").param("taskId", "1"));
+		verify(taskRepo, times(1)).deleteById(any());
 	}
 }

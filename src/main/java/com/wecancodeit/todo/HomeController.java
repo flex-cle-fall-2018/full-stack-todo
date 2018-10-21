@@ -30,6 +30,7 @@ public class HomeController {
 	
 	@GetMapping("/deleteTask")
 	public String removeTask(@RequestParam(required = true) Long taskId) {
+		taskRepo.deleteById(taskId);
 		return "redirect:/";
 	}
 }

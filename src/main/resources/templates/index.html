@@ -11,7 +11,11 @@
   <h1>To-Do App</h1>
 
   <ul>
-    <li th:each="task : ${tasks}" th:text="${task.description}"></li>
+  	<li th:if="${tasks.isEmpty()}">Nothing to do.</li>
+    <li th:each="task : ${tasks}">
+    	<span th:text="${task.description}"></span>
+    	<a th:href="@{/deleteTask(taskId=${task.id})}">[delete]</a>
+    </li>
   </ul>
 
   <!-- ADD TASK FORM -->
