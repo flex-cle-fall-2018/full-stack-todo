@@ -10,6 +10,15 @@
 <body>
   <h1>To-Do App</h1>
 
+  <ul>
+    <li th:each="task : ${tasks}" th:text="${task.description}"></li>
+  </ul>
+
+  <!-- ADD TASK FORM -->
+  <form method="POST" th:action="@{/addTask}">
+  	<input type="text" name="taskDescription">
+  	<input type="submit" value="Add Task">
+  </form>
 
   <script src="/js/app.js"></script>
 </body>
