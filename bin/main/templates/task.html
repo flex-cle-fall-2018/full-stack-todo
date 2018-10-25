@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Task <span th:text="${task.id}"></span>:
+    <span th:text="${task.description}"></span>
+  </h1>
+
+  <!-- UPDATE TASK FORM -->
+  <form method="POST" th:action="@{'/updateTask/' + ${task.id} + '/'}">
+  	<input type="text" name="taskDescription">
+  	<input type="submit" value="Update Task">
+  </form>
+
+  <a th:href="@{/}">Back to List</a>
+</body>
+</html>
