@@ -12,8 +12,8 @@
 
   <ul>
   	<li th:if="${tasks.isEmpty()}">Nothing to do.</li>
-    <li th:each="task : ${tasks}" th:data-id="${task.id}">
-      <span th:text="${task.description}"></span>
+    <li th:each="task : ${tasks}">
+      <span th:text="${task.description}" th:data-id="${task.id}"></span>
       <a th:href="@{'/viewTask/' + ${task.id} + '/'}">[view]</a>
     	<a th:href="@{/deleteTask(taskId=${task.id})}">[delete]</a>
     </li>

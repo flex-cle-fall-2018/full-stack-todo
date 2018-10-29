@@ -1,0 +1,8 @@
+span[data-id] {
+  cursor: pointer;
+}
+
+span[data-id]:hover {
+  color: orange;
+  text-decoration: underline;
+}

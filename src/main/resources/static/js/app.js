@@ -1,51 +1,59 @@
 (function(module) {
 
-  const todoItems = document.querySelectorAll('li[data-id]');
+  const app = {};
 
-  for (let todoItem of todoItems) {
-    todoItem.addEventListener('click', renameItem);
-  }
+  app.addEventListeners = function() {
+    const todoItems = document.querySelectorAll('span[data-id]');
 
-  function renameItem() {
+    for (let todoItem of todoItems) {
+      todoItem.addEventListener('click', app.renameItem);
+    }
+  };
+
+  app.renameItem = function() {
     const id = this.getAttribute('data-id');
 
     const newDescription =
       prompt(`What would you like to rename this task?`);
 
-    updateTaskItem(id, newDescription);
-  }
+    if (newDescription) {
+      app.sendItemUpdateRequest(id, newDescription);
+    }
+  };
 
-  function updateTaskItem(id, description) {
+  app.sendItemUpdateRequest = function(id, description) {
     const xhr = new XMLHttpRequest();
   
     xhr.onreadystatechange = function() {
       if (this.status === 200 && this.readyState === 4) {
-        console.log(this.responseText);
-
-        alert('Updated');
-        window.location.reload();
+        const updatedTaskItem = JSON.parse(this.responseText);
+        const taskItemSpan = document.querySelector(`span[data-id="${id}"]`);
+        app.updateTaskItem(taskItemSpan, updatedTaskItem);
       }
     };
     
     xhr.open('PUT', '/api/tasks');
-  
     xhr.setRequestHeader('Content-Type', 'application/json');
-  
     const body = JSON.stringify({ id: id, description: description });
-    
     xhr.send(body);
-  }
+  };
 
-  
-  // const app = {};
+  app.updateTaskItem = function(taskItemElement, taskItemObject) {
+    taskItemElement.textContent = taskItemObject.description
+  };
 
-  // app.todos = [];
+  app.getItemId = function(itemElement) {
+    const idString = itemElement.getAttribute('data-id');
+    return parseInt(idString);
+  };
 
-  // app.message = "Hello World!";
+  app.todos = [];
 
-  // app.getMessage = function() {
-  //   return app.message;
-  // };
+  app.message = "Hello World!";
+
+  app.getMessage = function() {
+    return app.message;
+  };
 
   if (module) module.exports = app;
 
