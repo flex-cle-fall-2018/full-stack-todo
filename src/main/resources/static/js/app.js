@@ -55,6 +55,8 @@
     return app.message;
   };
 
+  app.addEventListeners();
+
   if (module) module.exports = app;
 
 })(typeof module !== 'undefined' ? module : null);
