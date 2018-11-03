@@ -7,14 +7,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TaskPopulator implements CommandLineRunner {
-	
+
 	@Resource
 	TaskRepository taskRepo;
 
+	@Resource
+	TagRepository tagRepo;
+
 	@Override
 	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
-
+		
+		TaskItem mowTheLawn = taskRepo.save(new TaskItem("Mow the Lawn"));
+		TaskItem feedTheCat = taskRepo.save(new TaskItem("Feed the Cat"));
+		
+		Tag houseChores = tagRepo.save(new Tag("House Chores", mowTheLawn));
 	}
 
 }
